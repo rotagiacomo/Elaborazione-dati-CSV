@@ -27,6 +27,16 @@ public class ElaborazioneCSV {
         aggiungiCampoCSV(recordMioValore, file);
     }
 
+    public void aggiungiCampoCancellazioneLogica(File file) throws IOException{
+        int numeroRecord = numeroDiRecord(file);
+        String[] nuovoCampo = new String[numeroRecord+1];
+        nuovoCampo[0] = "Cancellazione logica";
+        for (int i=1; i<numeroRecord; i++){
+            nuovoCampo[i] = Boolean.toString(false);
+        }
+        aggiungiCampoCSV(nuovoCampo, file);
+    }
+
     private int numeroDiRecord(File file) throws IOException{
         FileReader fileReader = new FileReader(file);
         BufferedReader bufferedReader = new BufferedReader(fileReader);

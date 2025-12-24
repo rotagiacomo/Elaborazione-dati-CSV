@@ -5,5 +5,6 @@ public class Main {
         File file = new File("rota.csv");
         ElaborazioneCSV classeLavoro = new ElaborazioneCSV();
         classeLavoro.aggiungiMioCampo(file);
+        classeLavoro.aggiungiCampoCancellazioneLogica(file);
     }
 }
