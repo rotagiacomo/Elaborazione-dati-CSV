@@ -6,5 +6,6 @@ public class Main {
         ElaborazioneCSV classeLavoro = new ElaborazioneCSV();
         classeLavoro.aggiungiMioCampo(file);
         classeLavoro.aggiungiCampoCancellazioneLogica(file);
+        System.out.println("numero campi: " + classeLavoro.numeroDiCampi(file));
     }
 }

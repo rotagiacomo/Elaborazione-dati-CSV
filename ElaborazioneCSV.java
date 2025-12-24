@@ -47,4 +47,12 @@ public class ElaborazioneCSV {
         bufferedReader.close();
         return numeroRecord-1;
     }
+
+    public int numeroDiCampi(File file) throws IOException{
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+        String rigaCampi = bufferedReader.readLine();
+        bufferedReader.close();
+        String[] splitRigaCampi = rigaCampi.split(",");
+        return splitRigaCampi.length;
+    }
 }
