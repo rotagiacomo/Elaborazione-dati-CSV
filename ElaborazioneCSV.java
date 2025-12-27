@@ -31,7 +31,7 @@ public class ElaborazioneCSV {
         int numeroRecord = numeroDiRecord(file);
         String[] nuovoCampo = new String[numeroRecord+1];
         nuovoCampo[0] = "Cancellazione logica";
-        for (int i=1; i<numeroRecord; i++){
+        for (int i=1; i<=numeroRecord; i++){
             nuovoCampo[i] = Boolean.toString(false);
         }
         aggiungiCampoCSV(nuovoCampo, file);
@@ -55,4 +55,22 @@ public class ElaborazioneCSV {
         String[] splitRigaCampi = rigaCampi.split(",");
         return splitRigaCampi.length;
     }
+
+    public int[] lunghezzaCampi(File file)throws IOException{
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+        String riga = bufferedReader.readLine();
+        int[] lunghezzaCampi = new int[numeroDiCampi(file)];
+        while (riga != null){
+            String[] rigaSplit = riga.split(",");
+            for (int i = 0; i<rigaSplit.length; i++){
+                if (!rigaSplit[i].isEmpty()){
+                    lunghezzaCampi[i]++;
+                }
+            }
+            riga = bufferedReader.readLine();
+        }
+        return lunghezzaCampi;
+    }
+
+
 }

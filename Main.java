@@ -7,5 +7,15 @@ public class Main {
         classeLavoro.aggiungiMioCampo(file);
         classeLavoro.aggiungiCampoCancellazioneLogica(file);
         System.out.println("numero campi: " + classeLavoro.numeroDiCampi(file));
+        int[] lunghezzaCampi = classeLavoro.lunghezzaCampi(file);
+        String lCampi = "lunghezza campi [";
+        for (int i = 0; i< lunghezzaCampi.length; i++){
+            lCampi += lunghezzaCampi[i];
+            if (i < lunghezzaCampi.length-1){
+                lCampi += ",";
+            }
+        }
+        lCampi += "]";
+        System.out.println(lCampi);
     }
 }
