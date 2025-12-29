@@ -3,18 +3,18 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
 public class ElaborazioneCSV {
-    private void aggiungiCampoCSV(String[] campo, File fileCSV) throws IOException {
+    private void aggiungiCampoCSV(String[] campo, File file) throws IOException {
         File temp = new File("temp.csv");
         FileWriter fileWriter = new FileWriter(temp);
         PrintWriter printWriter = new PrintWriter(fileWriter);
-        BufferedReader bufferedReader = new BufferedReader(new FileReader(fileCSV));
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
         for (int i=0; i<campo.length; i++){
             String linea = bufferedReader.readLine();
             printWriter.println(linea + "," + campo[i]);
         }
         printWriter.close();
         bufferedReader.close();
-        Files.move(temp.toPath(), fileCSV.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.move(temp.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
     }
 
     public void aggiungiMioCampo(File file) throws IOException{
@@ -69,8 +69,58 @@ public class ElaborazioneCSV {
             }
             riga = bufferedReader.readLine();
         }
+        bufferedReader.close();
         return lunghezzaCampi;
     }
 
+    private int lunghezzaRecord(String record){
+        return record.length();
+    }
+
+    private int[] recordLunghezzaMaggiore(File file) throws IOException{
+        int[] lunghezzaMaggiore = new int[numeroDiCampi(file)];
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+        String riga = bufferedReader.readLine();
+        while (riga != null){
+            String[] rigaSplit = riga.split(",");
+            for (int i=0; i<rigaSplit.length; i++){
+                if (lunghezzaMaggiore[i]<lunghezzaRecord(rigaSplit[i])){
+                    lunghezzaMaggiore[i] = lunghezzaRecord(rigaSplit[i]);
+                }
+            }
+            riga = bufferedReader.readLine();
+        }
+        bufferedReader.close();
+        return lunghezzaMaggiore;
+    }
+
+    public void dimensioneFissa(File file)throws IOException{
+        int[] recordLunghezzaMaggiore = recordLunghezzaMaggiore(file);
+        File temp = new File("temp.csv");
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+        PrintWriter printWriter = new PrintWriter(new FileWriter(temp, true));
+        String riga = bufferedReader.readLine();
+        while (riga != null){
+            String nuovaRiga = "";
+            String[] rigaSplit = riga.split(",");
+            for (int i=0; i< rigaSplit.length; i++){
+                int numeroSpazi = recordLunghezzaMaggiore[i]-lunghezzaRecord(rigaSplit[i]);
+                nuovaRiga += rigaSplit[i] + spazi(numeroSpazi) + ",";
+            }
+            printWriter.println(nuovaRiga);
+            riga = bufferedReader.readLine();
+        }
+        bufferedReader.close();
+        printWriter.close();
+        Files.move(temp.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+    }
+
+    private String spazi(int numeroSpazi){
+        String string = "";
+        for (int i=0; i<numeroSpazi; i++){
+            string += " ";
+        }
+        return string;
+    }
 
 }

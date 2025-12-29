@@ -17,5 +17,6 @@ public class Main {
         }
         lCampi += "]";
         System.out.println(lCampi);
+        classeLavoro.dimensioneFissa(file);
     }
 }
