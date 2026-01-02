@@ -105,7 +105,10 @@ public class ElaborazioneCSV {
             String[] rigaSplit = riga.split(",");
             for (int i=0; i< rigaSplit.length; i++){
                 int numeroSpazi = recordLunghezzaMaggiore[i]-lunghezzaRecord(rigaSplit[i]);
-                nuovaRiga += rigaSplit[i] + spazi(numeroSpazi) + ",";
+                nuovaRiga += rigaSplit[i] + spazi(numeroSpazi);
+                if (i < rigaSplit.length-1){
+                    nuovaRiga += ",";
+                }
             }
             printWriter.println(nuovaRiga);
             riga = bufferedReader.readLine();
@@ -121,6 +124,23 @@ public class ElaborazioneCSV {
             string += " ";
         }
         return string;
+    }
+
+    public void aggiungiRecord(String[] record, File file) throws IOException{
+        PrintWriter printWriter = new PrintWriter(new FileWriter(file, true));
+        String nuovaRiga = "\n";
+        for (int i=0; i<record.length; i++){
+            if (record[i] != null) {
+                nuovaRiga += record[i];
+            }else {
+                nuovaRiga += " ";
+            }
+            if (i < record.length-1){
+                nuovaRiga += ",";
+            }
+        }
+        printWriter.print(nuovaRiga);
+        printWriter.close();
     }
 
 }
