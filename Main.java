@@ -7,12 +7,10 @@ public class Main {
         classeLavoro.aggiungiRecord(recordCasuale(classeLavoro.numeroDiCampi(file)), file);
         classeLavoro.aggiungiMioCampo(file);
         classeLavoro.aggiungiCampoCancellazioneLogica(file);
-        System.out.println("numero campi: " + classeLavoro.numeroDiCampi(file));
+        String[] campi = classeLavoro.mostraCampi(new String[]{"County", "City"}, file);
+        stampaArrString(campi);
 
-        int[] lunghezzaCampi = classeLavoro.lunghezzaCampi(file);
-        System.out.println("lunghezza camp: " + intToString(lunghezzaCampi));
-
-        classeLavoro.dimensioneFissa(file);
+        //classeLavoro.dimensioneFissa(file);
     }
 
     public static String intToString(int[] interi){
@@ -33,5 +31,11 @@ public class Main {
             records[i] = Integer.toString((int) (Math.random()*100));
         }
         return records;
+    }
+
+    public static void stampaArrString(String[] arr){
+        for (int i = 0; i < arr.length; i++) {
+            System.out.println(arr[i]);
+        }
     }
 }
