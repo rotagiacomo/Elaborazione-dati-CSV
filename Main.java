@@ -7,10 +7,11 @@ public class Main {
         classeLavoro.aggiungiRecord(recordCasuale(classeLavoro.numeroDiCampi(file)), file);
         classeLavoro.aggiungiMioCampo(file);
         classeLavoro.aggiungiCampoCancellazioneLogica(file);
-        String[] campi = classeLavoro.mostraCampi(new String[]{"County", "City"}, file);
-        stampaArrString(campi);
+        System.out.println(classeLavoro.recodDiCampo("County", 2, file));
+        //String[] campi = classeLavoro.mostraCampi(new String[]{"County", "City"}, file);
+        //stampaArrString(campi);
 
-        //classeLavoro.dimensioneFissa(file);
+        classeLavoro.dimensioneFissa(file);
     }
 
     public static String intToString(int[] interi){

@@ -4,54 +4,55 @@ import java.nio.file.StandardCopyOption;
 
 public class ElaborazioneCSV {
 
-    private void aggiungiCampoCSV(String[] campo, File file) throws IOException {
-        File temp = new File("temp.csv");
-        FileWriter fileWriter = new FileWriter(temp);
-        PrintWriter printWriter = new PrintWriter(fileWriter);
-        BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
-        for (int i=0; i<campo.length; i++){
-            String linea = bufferedReader.readLine();
-            printWriter.println(linea + "," + campo[i]);
+    private void aggiungiCampoCSV(String nomeCampo, String[] valori ,File file) throws IOException {
+        try {
+            int indiceCampo = indiceCampo(nomeCampo, file);
+            assegnaValoriMancati(indiceCampo, valori, file);
+        }catch (CampoNotFoundException exception){
+            File temp = new File("temp.csv");
+            PrintWriter printWriter = new PrintWriter(new FileWriter(temp));
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+            String riga = bufferedReader.readLine();
+            printWriter.println(riga + "," + nomeCampo);
+            riga = bufferedReader.readLine();
+            for (int i=0; riga != null; i++){
+                if (i < valori.length) {
+                    printWriter.println(riga + "," + valori[i]);
+                }else {
+                    printWriter.println(riga + ",");
+                }
+                riga = bufferedReader.readLine();
+            }
+            printWriter.close();
+            bufferedReader.close();
+            Files.move(temp.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
         }
-        printWriter.close();
-        bufferedReader.close();
-        Files.move(temp.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
     }
 
     public void aggiungiMioCampo(File file) throws IOException{
-        int numeroRighe = numeroRighe(file);
-        String[] recordMioValore = new String[numeroRighe];
-        recordMioValore[0] = "Mio valore";
-        for (int i = 1; i<numeroRighe; i++){
+        String nomeCampo = "Mio valore";
+        String[] recordMioValore = new String[(numeroRighe(file)-1)];
+        for (int i = 0; i<recordMioValore.length; i++){
             recordMioValore[i] = Integer.toString((int)(Math.random()*11)+10);
         }
-        aggiungiCampoCSV(recordMioValore, file);
+        aggiungiCampoCSV(nomeCampo, recordMioValore, file);
     }
 
     public void aggiungiCampoCancellazioneLogica(File file) throws IOException{
-        try {
-            int indiceCampo = indiceCampo("Cancellazione logica", file);
-            if (lunghezzaCampi(file)[indiceCampo] < numeroRighe(file)){
-                aggiungiCancellazioneRecordMancanti(indiceCampo, file);
-            }
-        }catch (CampoNotFoundException exception){
-            int numeroRighe = numeroRighe(file);
-            String[] nuovoCampo = new String[numeroRighe];
-            nuovoCampo[0] = "Cancellazione logica";
-            for (int i = 1; i < numeroRighe; i++) {
-                nuovoCampo[i] = Boolean.toString(false);
-            }
-            aggiungiCampoCSV(nuovoCampo, file);
+        String nomeCampo = "Cancellazione logica";
+        String[] valoriCampo = new String[(numeroRighe(file)-1)];
+        for (int i = 0; i < valoriCampo.length; i++) {
+            valoriCampo[i] = Boolean.toString(false);
         }
+        aggiungiCampoCSV(nomeCampo, valoriCampo, file);
     }
 
-    private void aggiungiCancellazioneRecordMancanti(int indiceCampo, File file) throws IOException{
+    private void assegnaValoriMancati(int indiceCampo, String[] valori, File file) throws IOException{
         //Da implementare
     }
 
     private int numeroRighe(File file) throws IOException{
-        FileReader fileReader = new FileReader(file);
-        BufferedReader bufferedReader = new BufferedReader(fileReader);
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
         int numeroRighe = 0;
         while (bufferedReader.readLine() != null){
             numeroRighe++;
@@ -177,16 +178,16 @@ public class ElaborazioneCSV {
         return campiMostrati;
     }
 
-    public String[] recodDiCampo(String campo, File file) throws IOException{
+    public String recodDiCampo(String campo, int riga,File file) throws IOException{
         BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
-        bufferedReader.readLine();
         int indiceCampo = indiceCampo(campo, file);
-        String[] records = new String[numeroRighe(file)-1];
-        for (int i=0; i<records.length; i++){
-            records[i] = bufferedReader.readLine().split(",")[indiceCampo];
+        for (int i=0; i<riga-1; i++){
+            bufferedReader.readLine();
         }
+        String record = bufferedReader.readLine();
         bufferedReader.close();
-        return records;
+        record = record.split(",")[indiceCampo];
+        return record;
     }
 
     private int indiceCampo(String campo, File file)throws IOException{
@@ -204,5 +205,9 @@ public class ElaborazioneCSV {
             throw new CampoNotFoundException();
         }
         return indiceCampo;
+    }
+
+    public void modificaRecord(String campo, int riga){
+
     }
 }
