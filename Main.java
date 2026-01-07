@@ -36,7 +36,7 @@ public class Main {
     public static void avviaMenu(File file) throws IOException{
         ElaborazioneCSV elaborazioneCSV = new ElaborazioneCSV();
         Scanner scanner = new Scanner(System.in);
-        int opzione = 0;
+        int opzione;
         do{
            System.out.println("1) aggiungere campo mio valore");
            System.out.println("2) aggiungere campo cancellazione logica");
@@ -61,7 +61,16 @@ public class Main {
                    System.out.println("Numero di campi: " + elaborazioneCSV.numeroDiCampi(file));
                    break;
                case 4:
-                   //Da implementare
+                   String[] campi = elaborazioneCSV.getCampi(file);
+                   int[] lunghezzaCampi = elaborazioneCSV.lunghezzaCampi(file);
+                   String string = "";
+                   for (int i=0; i<campi.length; i++){
+                       string += campi[i] + ": " + lunghezzaCampi[i];
+                       if (i< campi.length-1){
+                           string += ", ";
+                       }
+                   }
+                   System.out.println(string);
                    break;
                case 5:
                    elaborazioneCSV.dimensioneFissa(file);

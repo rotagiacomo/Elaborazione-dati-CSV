@@ -62,11 +62,15 @@ public class ElaborazioneCSV {
     }
 
     public int numeroDiCampi(File file) throws IOException{
+        String[] campi = getCampi(file);
+        return campi.length;
+    }
+
+    public String[] getCampi(File file) throws IOException{
         BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
         String rigaCampi = bufferedReader.readLine();
         bufferedReader.close();
-        String[] splitRigaCampi = rigaCampi.split(",");
-        return splitRigaCampi.length;
+        return rigaCampi.split(",");
     }
 
     public int[] lunghezzaCampi(File file)throws IOException{
@@ -76,7 +80,7 @@ public class ElaborazioneCSV {
         while (riga != null){
             String[] rigaSplit = riga.split(",");
             for (int i = 0; i<rigaSplit.length; i++){
-                if (!rigaSplit[i].isEmpty()){
+                if (!rigaSplit[i].trim().isEmpty()){
                     lunghezzaCampi[i]++;
                 }
             }
@@ -141,7 +145,7 @@ public class ElaborazioneCSV {
 
     public void aggiungiRecord(String[] record, File file) throws IOException{
         PrintWriter printWriter = new PrintWriter(new FileWriter(file, true));
-        String nuovaRiga = "\n";
+        String nuovaRiga = "";
         for (int i=0; i<record.length; i++){
             if (record[i] != null) {
                 nuovaRiga += record[i];
@@ -152,7 +156,7 @@ public class ElaborazioneCSV {
                 nuovaRiga += ",";
             }
         }
-        printWriter.print(nuovaRiga);
+        printWriter.println(nuovaRiga);
         printWriter.close();
     }
 
@@ -196,7 +200,7 @@ public class ElaborazioneCSV {
         bufferedReader.close();
         int indiceCampo = -1;
         for (int i=0; i<campi.length; i++){
-            if (campi[i].equals(campo)){
+            if (campi[i].trim().equals(campo.trim())){
                 indiceCampo = i;
                 break;
             }
