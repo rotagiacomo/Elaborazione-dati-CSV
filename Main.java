@@ -100,6 +100,7 @@ public class Main {
                case 10:
                    System.out.println("A quale riga?");
                    int rigaDaCancellare = Integer.parseInt(scanner.nextLine());
+                   elaborazioneCSV.cancellaLogicamente(rigaDaCancellare, file);
                    break;
            }
         }while (opzione !=0);
