@@ -89,10 +89,17 @@ public class Main {
                    System.out.println("Contenuto: " + elaborazioneCSV.recodDiCampo(campo, riga, file));
                    break;
                case 9:
-                   //Da implementare
+                   System.out.println("Di quale campo?");
+                   String campoDaModificare = scanner.nextLine();
+                   System.out.println("A quale riga?");
+                   int rigaDaModificare = Integer.parseInt(scanner.nextLine());
+                   System.out.println("Nuovo record");
+                   String nuovoRecord = scanner.nextLine();
+                   elaborazioneCSV.modificaRecord(campoDaModificare, rigaDaModificare, nuovoRecord, file);
                    break;
                case 10:
-                   //Da implementare
+                   System.out.println("A quale riga?");
+                   int rigaDaCancellare = Integer.parseInt(scanner.nextLine());
                    break;
            }
         }while (opzione !=0);

@@ -211,7 +211,38 @@ public class ElaborazioneCSV {
         return indiceCampo;
     }
 
-    public void modificaRecord(String campo, int riga){
+    public void modificaRecord(String campo, int riga, String nuovoRecord,File file) throws IOException{
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+        File temp = new File("temp.csv");
+        PrintWriter printWriter = new PrintWriter(new FileWriter(temp));
+        int indiceCampo = indiceCampo(campo, file);
+        String rigaLetta = bufferedReader.readLine();
+        for (int i=1; rigaLetta != null; i++){
+            if (i == riga){
+                String[] rigaSplit = rigaLetta.split(",");
+                String nuovaRiga = "";
+                for (int j=0; j<rigaSplit.length; j++){
+                    if (j == indiceCampo){
+                        nuovaRiga += nuovoRecord;
+                    }else {
+                        nuovaRiga += rigaSplit[j];
+                    }
+                    if (j < rigaSplit.length-1){
+                        nuovaRiga += ",";
+                    }
+                }
+                printWriter.println(nuovaRiga);
+            }else {
+                printWriter.println(rigaLetta);
+            }
+            rigaLetta = bufferedReader.readLine();
+        }
+        printWriter.close();
+        bufferedReader.close();
+        Files.move(temp.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+    }
 
+    public void cancellaLogicamente(int riga, File file) throws IOException{
+        modificaRecord("Cancellazione logica", riga, "false",file);
     }
 }
