@@ -48,6 +48,7 @@ public class Main {
            System.out.println("8) ricerca record ");
            System.out.println("9) modifica record");
            System.out.println("10) cancella logicamente record");
+           System.out.println("11) annulla cancellazione logica");
            System.out.println("0) uscire");
            opzione = Integer.parseInt(scanner.nextLine());
            switch (opzione){
@@ -65,7 +66,7 @@ public class Main {
                    int[] lunghezzaCampi = elaborazioneCSV.lunghezzaCampi(file);
                    String string = "";
                    for (int i=0; i<campi.length; i++){
-                       string += campi[i] + ": " + lunghezzaCampi[i];
+                       string += campi[i].trim() + ": " + lunghezzaCampi[i];
                        if (i< campi.length-1){
                            string += ", ";
                        }
@@ -79,30 +80,40 @@ public class Main {
                    elaborazioneCSV.aggiungiRecord(recordCasuale(elaborazioneCSV.numeroDiCampi(file)), file);
                    break;
                case 7:
-                   //Da implementare
+                   String[] campiDaMostrare = elaborazioneCSV.mostraCampi(new String[]{"City", "Make", "Model"}, file);
+                   stampaArrString(campiDaMostrare);
                    break;
                case 8:
-                   System.out.println("Di quale campo?");
-                   String campo = scanner.nextLine();
-                   System.out.println("A quale riga?");
-                   int riga = Integer.parseInt(scanner.nextLine());
-                   System.out.println("Contenuto: " + elaborazioneCSV.recodDiCampo(campo, riga, file));
+                   String campoDaMostrare = getCampo(scanner);
+                   int rigaDaMostrare = getRiga(scanner);
+                   System.out.println("Contenuto: " + elaborazioneCSV.recodDiCampo(campoDaMostrare, rigaDaMostrare, file));
                    break;
                case 9:
-                   System.out.println("Di quale campo?");
-                   String campoDaModificare = scanner.nextLine();
-                   System.out.println("A quale riga?");
-                   int rigaDaModificare = Integer.parseInt(scanner.nextLine());
+                   String campoDaModificare = getCampo(scanner);
+                   int rigaDaModificare = getRiga(scanner);
                    System.out.println("Nuovo record");
                    String nuovoRecord = scanner.nextLine();
                    elaborazioneCSV.modificaRecord(campoDaModificare, rigaDaModificare, nuovoRecord, file);
                    break;
                case 10:
-                   System.out.println("A quale riga?");
-                   int rigaDaCancellare = Integer.parseInt(scanner.nextLine());
+                   int rigaDaCancellare = getRiga(scanner);
                    elaborazioneCSV.cancellaLogicamente(rigaDaCancellare, file);
                    break;
+                case 11:
+                   int rigaDaAnnullare = getRiga(scanner);
+                   elaborazioneCSV.annullaCancellaLogicamente(rigaDaAnnullare, file);
            }
+           System.out.println();
         }while (opzione !=0);
+    }
+
+    private static String getCampo(Scanner scanner){
+        System.out.println("Di quale campo?");
+        return scanner.nextLine();
+    }
+
+    private static int getRiga(Scanner scanner){
+        System.out.println("A quale riga?");
+        return Integer.parseInt(scanner.nextLine());
     }
 }

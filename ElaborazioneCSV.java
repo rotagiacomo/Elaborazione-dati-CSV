@@ -243,6 +243,10 @@ public class ElaborazioneCSV {
     }
 
     public void cancellaLogicamente(int riga, File file) throws IOException{
-        modificaRecord("Cancellazione logica", riga, "false",file);
+        modificaRecord("Cancellazione logica", riga, "true",file);
+    }
+
+    public void annullaCancellaLogicamente(int riga, File file) throws IOException{
+        modificaRecord("Cancellazione logica", riga, "false", file);
     }
 }
