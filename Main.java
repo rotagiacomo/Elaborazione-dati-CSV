@@ -84,9 +84,10 @@ public class Main {
                    stampaArrString(campiDaMostrare);
                    break;
                case 8:
-                   String campoDaMostrare = getCampo(scanner);
-                   int rigaDaMostrare = getRiga(scanner);
-                   System.out.println("Contenuto: " + elaborazioneCSV.recodDiCampo(campoDaMostrare, rigaDaMostrare, file));
+                   String campoDaCercare = getCampo(scanner);
+                   System.out.println("Che record vuoi cercare?");
+                   String recordDaCercare = scanner.nextLine();
+                   System.out.println("Si trova a riga: " + elaborazioneCSV.ricercaRecord(campoDaCercare, recordDaCercare, file));
                    break;
                case 9:
                    String campoDaModificare = getCampo(scanner);

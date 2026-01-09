@@ -182,16 +182,20 @@ public class ElaborazioneCSV {
         return campiMostrati;
     }
 
-    public String recodDiCampo(String campo, int riga,File file) throws IOException{
+    public int ricercaRecord(String campo, String record,File file) throws IOException{
         BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
         int indiceCampo = indiceCampo(campo, file);
-        for (int i=0; i<riga-1; i++){
-            bufferedReader.readLine();
+        String riga;
+        int nRiga = 1;
+        while ((riga = bufferedReader.readLine()) != null) {
+            String[] rigaSplit = riga.split(",");
+            if (record.trim().equals(rigaSplit[indiceCampo].trim())) {
+                break;
+            }
+            nRiga++;
         }
-        String record = bufferedReader.readLine();
         bufferedReader.close();
-        record = record.split(",")[indiceCampo];
-        return record;
+        return nRiga;
     }
 
     private int indiceCampo(String campo, File file)throws IOException{
